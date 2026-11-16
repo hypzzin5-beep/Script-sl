@@ -1,1 +1,10 @@
+-- THE GOAT SL
+-- Interface visual
 
+local THEGOAT = {}
+
+THEGOAT.Open = true
+
+print("THE GOAT SL carregado!")
+
+return THEGOAT
