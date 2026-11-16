@@ -1,10 +1,154 @@
--- THE GOAT SL
--- Interface visual
 
-local THEGOAT = {}
+--[[
+    THE GOAT SL V1
+    Interface visual
+]]
 
-THEGOAT.Open = true
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
 
-print("THE GOAT SL carregado!")
+local gui = Instance.new("ScreenGui")
+gui.Name = "THE_GOAT_SL"
+gui.ResetOnSpawn = false
+gui.Parent = playerGui
 
-return THEGOAT
+-- Janela principal
+local main = Instance.new("Frame")
+main.Name = "Main"
+main.Size = UDim2.new(0, 330, 0, 470)
+main.Position = UDim2.new(0, 15, 0.5, -235)
+main.BackgroundColor3 = Color3.fromRGB(12, 17, 27)
+main.BorderSizePixel = 0
+main.Parent = gui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = main
+
+local stroke = Instance.new("UIStroke")
+stroke.Color = Color3.fromRGB(0, 170, 255)
+stroke.Thickness = 2
+stroke.Parent = main
+
+-- Cabeçalho
+local header = Instance.new("TextLabel")
+header.Size = UDim2.new(1, -20, 0, 45)
+header.Position = UDim2.new(0, 10, 0, 0)
+header.BackgroundTransparency = 1
+header.Text = "🐐  THE GOAT SL"
+header.TextColor3 = Color3.fromRGB(220, 240, 255)
+header.TextSize = 19
+header.Font = Enum.Font.GothamBold
+header.TextXAlignment = Enum.TextXAlignment.Left
+header.Parent = main
+
+-- Botão minimizar
+local minimize = Instance.new("TextButton")
+minimize.Size = UDim2.new(0, 30, 0, 28)
+minimize.Position = UDim2.new(1, -40, 0, 8)
+minimize.Text = "−"
+minimize.TextSize = 22
+minimize.TextColor3 = Color3.new(1, 1, 1)
+minimize.BackgroundColor3 = Color3.fromRGB(0, 130, 210)
+minimize.Parent = main
+
+local content = Instance.new("ScrollingFrame")
+content.Position = UDim2.new(0, 8, 0, 50)
+content.Size = UDim2.new(1, -16, 1, -60)
+content.BackgroundTransparency = 1
+content.BorderSizePixel = 0
+content.ScrollBarThickness = 3
+content.ScrollBarImageColor3 = Color3.fromRGB(0, 170, 255)
+content.AutomaticCanvasSize = Enum.AutomaticSize.Y
+content.CanvasSize = UDim2.new(0, 0, 0, 0)
+content.Parent = main
+
+local layout = Instance.new("UIListLayout")
+layout.Padding = UDim.new(0, 5)
+layout.Parent = content
+
+-- Criar categorias
+local function category(name)
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -5, 0, 30)
+    label.BackgroundTransparency = 1
+    label.Text = "┃ " .. name
+    label.TextColor3 = Color3.fromRGB(40, 190, 255)
+    label.TextSize = 14
+    label.Font = Enum.Font.GothamBold
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = content
+end
+
+-- Criar botões ON/OFF apenas visuais
+local function toggle(name)
+    local row = Instance.new("Frame")
+    row.Size = UDim2.new(1, -5, 0, 35)
+    row.BackgroundTransparency = 1
+    row.Parent = content
+
+    local text = Instance.new("TextLabel")
+    text.Size = UDim2.new(1, -75, 1, 0)
+    text.BackgroundTransparency = 1
+    text.Text = name
+    text.TextColor3 = Color3.fromRGB(225, 235, 245)
+    text.TextSize = 12
+    text.Font = Enum.Font.Gotham
+    text.TextXAlignment = Enum.TextXAlignment.Left
+    text.Parent = row
+
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, 48, 0, 23)
+    button.Position = UDim2.new(1, -52, 0.5, -11)
+    button.Text = "OFF"
+    button.TextSize = 10
+    button.Font = Enum.Font.GothamBold
+    button.TextColor3 = Color3.new(1, 1, 1)
+    button.BackgroundColor3 = Color3.fromRGB(65, 75, 90)
+    button.Parent = row
+
+    local enabled = false
+
+    button.MouseButton1Click:Connect(function()
+        enabled = not enabled
+        button.Text = enabled and "ON" or "OFF"
+        button.BackgroundColor3 = enabled
+            and Color3.fromRGB(0, 165, 245)
+            or Color3.fromRGB(65, 75, 90)
+    end)
+end
+
+category("SURVIVAL")
+toggle("Auto eat")
+toggle("Auto drink")
+toggle("Nearest food / water")
+
+category("CARCASS")
+toggle("Auto Carcass")
+
+category("GROWTH")
+toggle("Grow New")
+toggle("Grow Existing")
+toggle("AFK Coins Farm")
+toggle("Spawn Beach")
+
+category("SAFETY")
+toggle("Leave Terrain")
+
+category("QUESTS")
+toggle("Auto Quest")
+
+-- Minimizar e restaurar
+local minimized = false
+
+minimize.MouseButton1Click:Connect(function()
+    minimized = not minimized
+    content.Visible = not minimized
+    main.Size = minimized
+        and UDim2.new(0, 330, 0, 48)
+        or UDim2.new(0, 330, 0, 470)
+    minimize.Text = minimized and "+" or "−"
+end)
+
+print("THE GOAT SL V1 carregado!")
